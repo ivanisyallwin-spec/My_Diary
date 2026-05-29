@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#ff8fb1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="My Diary">
+<meta name="mobile-web-app-capable" content="yes">
+<title>My Diary 🌸</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌸%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌸%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href='data:application/manifest+json,{"name":"My Diary","short_name":"Diary","start_url":".","display":"standalone","background_color":"%23ffe4ec","theme_color":"%23ff8fb1","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"%3E%3Crect width=\"100\" height=\"100\" fill=\"%23ffe4ec\"/%3E%3Ctext y=\".9em\" font-size=\"90\"%3E🌸%3C/text%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}'>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+  :root {
+    --bg: linear-gradient(180deg, #ffe4ec 0%, #fff5f8 50%, #ffe9f1 100%);
+    --primary: #ff8fb1;
+    --primary-dark: #e6739a;
+    --accent: #ffd6e3;
+    --card: #ffffff;
+    --text: #5a3a4a;
+    --soft: #fff0f5;
+    --border: #ffcad9;
+  }
+  body.theme-matcha {
+    --bg: linear-gradient(180deg, #e8f3e0 0%, #f4faef 50%, #e3f0d8 100%);
+    --primary: #8bbf6a; --primary-dark: #6fa450; --accent: #d4e8c0;
+    --text: #3d4a32; --soft: #f0f7e8; --border: #c8dfb2;
+  }
+  body.theme-blueberry {
+    --bg: linear-gradient(180deg, #e0e7ff 0%, #f0f3ff 50%, #dde4ff 100%);
+    --primary: #7c8cf0; --primary-dark: #5d6fd8; --accent: #c5d0ff;
+    --text: #2e3a6b; --soft: #eef1ff; --border: #b8c4f5;
+  }
+  body.theme-honey {
+    --bg: linear-gradient(180deg, #fff3d6 0%, #fffaeb 50%, #ffeec2 100%);
+    --primary: #f0b840; --primary-dark: #d49a20; --accent: #ffe39a;
+    --text: #6b4d12; --soft: #fff7e0; --border: #f5d68a;
+  }
+  body {
+    min-height: 100vh; min-height: 100dvh;
+    background: var(--bg);
+    font-family: 'Quicksand', system-ui, sans-serif;
+    color: var(--text);
+    padding-bottom: 90px;
+    transition: background 0.5s ease;
+    padding-top: env(safe-area-inset-top);
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: transparent; color: inherit; }
+  input, textarea { font-family: inherit; }
+  @keyframes pop { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  .pop { animation: pop 0.3s ease; }
+  .float-emoji { animation: float 3s ease-in-out infinite; display: inline-block; }
+  .cute-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04); }
+
+  header { padding: 20px 20px 12px; display: flex; justify-content: space-between; align-items: center; }
+  h1 { font-family: 'Caveat', cursive; font-size: 34px; color: var(--primary-dark); line-height: 1; }
+  .sub { font-size: 13px; opacity: 0.7; margin-top: 4px; }
+  .palette-btn { background: var(--card); border: 2px solid var(--border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+
+  .content { padding: 0 16px; }
+  .calendar-card { background: var(--card); border-radius: 24px; padding: 18px; border: 2px solid var(--border); }
+  .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .cal-title { font-size: 18px; font-weight: 700; color: var(--primary-dark); }
+  .week-info { font-size: 11px; color: var(--primary); margin-top: 2px; font-weight: 600; }
+  .cal-nav { background: var(--soft); border-radius: 12px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--primary); font-weight: 700; }
+
+  /* Calendar grid with week column */
+  .day-headers, .day-grid { display: grid; grid-template-columns: 28px repeat(7, 1fr); gap: 4px; }
+  .day-headers { margin-bottom: 6px; }
+  .day-header { text-align: center; font-size: 11px; font-weight: 600; opacity: 0.6; padding: 4px 0; }
+  .day-header.sun { color: var(--primary); }
+  .day-header.wk { color: var(--primary-dark); opacity: 1; }
+  .week-cell { display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--primary-dark); background: var(--soft); border-radius: 8px; opacity: 0.85; }
+  .day-cell { aspect-ratio: 1; border: 2px solid transparent; background: transparent; border-radius: 12px; color: var(--text); font-weight: 500; font-size: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 0; transition: all 0.2s; }
+  .day-cell.today { background: var(--accent); font-weight: 700; }
+  .day-cell.selected { border-color: var(--primary); }
+  .dots { display: flex; gap: 2px; margin-top: 2px; min-height: 4px; }
+  .dot { width: 4px; height: 4px; border-radius: 50%; }
+  .dot.event { background: var(--primary); }
+  .dot.entry { background: var(--primary-dark); }
+
+  .section-head { display: flex; justify-content: space-between; align-items: center; margin: 20px 4px 10px; }
+  .section-title { font-size: 15px; color: var(--primary-dark); font-weight: 700; }
+  .section-sub { font-size: 11px; opacity: 0.7; margin-top: 2px; font-weight: 500; }
+  .btn-primary { background: var(--primary); color: white; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+  .empty { background: var(--card); border-radius: 16px; padding: 24px; text-align: center; border: 2px dashed var(--border); font-size: 13px; opacity: 0.6; }
+  .event-card { background: var(--card); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 2px solid var(--border); }
+  .event-title { font-weight: 600; font-size: 14px; }
+  .event-meta { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+  .icon-btn { color: var(--primary); padding: 6px; font-size: 16px; }
+
+  nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 2px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0 calc(14px + env(safe-area-inset-bottom)); }
+  .nav-btn { padding: 4px 16px; display: flex; flex-direction: column; align-items: center; gap: 2px; opacity: 0.5; font-size: 11px; font-weight: 600; }
+  .nav-btn.active { opacity: 1; color: var(--primary); }
+  .nav-icon { font-size: 22px; }
+
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: flex-end; z-index: 100; }
+  .modal { background: var(--card); width: 100%; border-radius: 24px 24px 0 0; padding: 24px 20px calc(32px + env(safe-area-inset-bottom)); }
+  .handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px; }
+  .modal-title { color: var(--primary-dark); font-size: 18px; margin-bottom: 16px; font-weight: 700; }
+  .input { width: 100%; padding: 14px 16px; border-radius: 14px; border: 2px solid var(--border); background: var(--soft); font-size: 15px; outline: none; color: var(--text); margin-bottom: 12px; }
+  .reminder-box { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding: 12px; border-radius: 12px; background: var(--soft); cursor: pointer; font-size: 14px; }
+  .modal-actions { display: flex; gap: 10px; }
+  .btn { flex: 1; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 15px; }
+  .btn-cancel { border: 2px solid var(--border); color: var(--text); font-weight: 600; }
+  .btn-save { background: var(--primary); color: white; }
+
+  .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .theme-card { border: 2px solid var(--border); border-radius: 16px; padding: 16px; text-align: left; }
+  .theme-card.active { border-width: 3px; }
+  .theme-card .te { font-size: 24px; }
+  .theme-card .tn { font-weight: 700; margin-top: 4px; }
+
+  .mood-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .mood-btn { background: var(--soft); border: 2px solid transparent; border-radius: 12px; padding: 8px; font-size: 22px; width: 44px; height: 44px; }
+  .mood-btn.active { background: var(--accent); border-color: var(--primary); }
+  .diary-text { width: 100%; padding: 14px; border-radius: 14px; border: 2px solid var(--border); background: var(--soft); font-size: 18px; outline: none; font-family: 'Caveat', cursive; color: var(--text); resize: vertical; line-height: 1.5; min-height: 140px; }
+  .stickers-display { margin-top: 10px; font-size: 24px; }
+  .stickers-display span { margin-right: 4px; cursor: pointer; }
+  .editor-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .sticker-btn { flex: 1; padding: 12px; border-radius: 12px; border: 2px solid var(--border); background: var(--soft); color: var(--primary-dark); font-weight: 600; font-size: 14px; }
+  .save-btn { flex: 1; padding: 12px; border-radius: 12px; background: var(--primary); color: white; font-weight: 700; font-size: 14px; }
+  .sticker-tray { margin-top: 12px; padding: 12px; background: var(--soft); border-radius: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .sticker-pick { background: var(--card); border: 1px solid var(--border); border-radius: 10px; font-size: 22px; width: 40px; height: 40px; }
+  .date-pick { background: transparent; color: var(--primary-dark); font-weight: 700; font-size: 15px; outline: none; border: none; margin-bottom: 4px; }
+  .selected-week { font-size: 11px; color: var(--primary); font-weight: 600; margin-bottom: 12px; }
+  .past-entry { background: var(--card); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; border: 2px solid var(--border); cursor: pointer; }
+  .pe-head { display: flex; justify-content: space-between; align-items: center; }
+  .pe-date { font-size: 12px; color: var(--primary-dark); font-weight: 600; }
+  .pe-week { font-size: 10px; color: var(--primary); font-weight: 700; margin-left: 6px; }
+  .pe-body { margin-top: 6px; font-size: 14px; }
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1><span class="float-emoji" id="emoji">🌸</span> My Diary</h1>
+      <div class="sub" id="subtitle">Plan your days</div>
+    </div>
+    <button class="palette-btn" onclick="openThemes()">🎨</button>
+  </header>
+
+  <div id="app" class="content"></div>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nav-cal" onclick="setTab('calendar')">
+      <div class="nav-icon">📅</div><span>Calendar</span>
+    </button>
+    <button class="nav-btn" id="nav-diary" onclick="setTab('diary')">
+      <div class="nav-icon">📖</div><span>Diary</span>
+    </button>
+  </nav>
+
+<script>
+// ─────────── ISO Week calculation ───────────
+function getISOWeek(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+function getISOWeekYear(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  return d.getUTCFullYear();
+}
+
+// ─────────── State ───────────
+const THEMES = {
+  sakura:    { name: "Sakura",    emoji: "🌸", class: "" },
+  matcha:    { name: "Matcha",    emoji: "🍵", class: "theme-matcha" },
+  blueberry: { name: "Blueberry", emoji: "🫐", class: "theme-blueberry" },
+  honey:     { name: "Honey",     emoji: "🍯", class: "theme-honey" },
+};
+const MOODS = [
+  { e: "🥰", l: "Loved" }, { e: "😊", l: "Happy" }, { e: "😌", l: "Calm" }, { e: "😐", l: "Meh" },
+  { e: "😔", l: "Sad" }, { e: "😤", l: "Frustrated" }, { e: "😴", l: "Tired" }, { e: "🤩", l: "Excited" },
+];
+const STICKERS = ["🌸","🌷","🌻","🌈","⭐","✨","💖","🎀","🍰","🧸","☁️","🌙","☀️","🦄","🐰","🍓","🧁","🌿","🦋","🍃"];
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const DAYS = ["S","M","T","W","T","F","S"];
+
+let state = {
+  theme: localStorage.getItem("theme") || "sakura",
+  tab: "calendar",
+  viewDate: new Date(),
+  selectedDate: todayKey(),
+  events: JSON.parse(localStorage.getItem("events") || "{}"),
+  entries: JSON.parse(localStorage.getItem("entries") || "{}"),
+  showStickers: false,
+};
+
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+function parseKey(key) {
+  const [y,m,d] = key.split("-").map(Number);
+  return new Date(y, m-1, d);
+}
+
+function save() {
+  localStorage.setItem("theme", state.theme);
+  localStorage.setItem("events", JSON.stringify(state.events));
+  localStorage.setItem("entries", JSON.stringify(state.entries));
+}
+
+function applyTheme() {
+  document.body.className = THEMES[state.theme].class;
+  document.getElementById("emoji").textContent = THEMES[state.theme].emoji;
+  document.querySelector('meta[name="theme-color"]').setAttribute("content",
+    getComputedStyle(document.body).getPropertyValue("--primary").trim() || "#ff8fb1");
+}
+
+function setTab(t) {
+  state.tab = t;
+  document.getElementById("nav-cal").classList.toggle("active", t === "calendar");
+  document.getElementById("nav-diary").classList.toggle("active", t === "diary");
+  document.getElementById("subtitle").textContent = t === "calendar" ? "Plan your days" : "Write your story";
+  render();
+}
+
+function setTheme(t) {
+  state.theme = t;
+  save();
+  applyTheme();
+  closeModal();
+  render();
+}
+
+function changeMonth(d) {
+  const v = new Date(state.viewDate);
+  v.setMonth(v.getMonth() + d);
+  state.viewDate = v;
+  render();
+}
+
+function selectDate(key) {
+  state.selectedDate = key;
+  render();
+}
+
+function dateKeyForDay(day) {
+  const y = state.viewDate.getFullYear();
+  const m = String(state.viewDate.getMonth() + 1).padStart(2, "0");
+  return `${y}-${m}-${String(day).padStart(2, "0")}`;
+}
+
+function escapeHtml(s) {
+  return String(s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+// ─────────── Render ───────────
+function render() {
+  const app = document.getElementById("app");
+  if (state.tab === "calendar") app.innerHTML = renderCalendar();
+  else app.innerHTML = renderDiary();
+}
+
+function renderCalendar() {
+  const year = state.viewDate.getFullYear();
+  const month = state.viewDate.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  // Build calendar as rows of 7 days, with week number column on the left
+  const rows = [];
+  let currentRow = new Array(7).fill(null);
+  // Fill leading empties
+  for (let i = 0; i < firstDay; i++) currentRow[i] = null;
+  let col = firstDay;
+  for (let d = 1; d <= daysInMonth; d++) {
+    currentRow[col] = d;
+    col++;
+    if (col === 7) {
+      rows.push(currentRow);
+      currentRow = new Array(7).fill(null);
+      col = 0;
+    }
+  }
+  if (col !== 0) rows.push(currentRow);
+
+  // Build HTML grid with week numbers
+  let cells = "";
+  rows.forEach(row => {
+    // Find any valid day in this row to compute the week number
+    let weekNum = "";
+    const firstValid = row.find(d => d !== null);
+    if (firstValid) {
+      const dt = new Date(year, month, firstValid);
+      weekNum = getISOWeek(dt);
+    }
+    cells += `<div class="week-cell">W${String(weekNum).padStart(2,"0")}</div>`;
+    row.forEach(d => {
+      if (d === null) {
+        cells += `<div></div>`;
+      } else {
+        const key = dateKeyForDay(d);
+        const isToday = key === todayKey();
+        const isSel = key === state.selectedDate;
+        const hasEvent = (state.events[key] || []).length > 0;
+        const hasEntry = !!state.entries[key];
+        cells += `<button class="day-cell ${isToday?'today':''} ${isSel?'selected':''}" onclick="selectDate('${key}')">${d}
+          <div class="dots">${hasEvent?'<span class="dot event"></span>':''}${hasEntry?'<span class="dot entry"></span>':''}</div>
+        </button>`;
+      }
+    });
+  });
+
+  // Today's week info for header
+  const today = new Date();
+  const thisWeek = getISOWeek(today);
+  const thisWeekYear = getISOWeekYear(today);
+
+  const todays = state.events[state.selectedDate] || [];
+  let eventsHtml = todays.length === 0
+    ? `<div class="empty">Nothing planned — add an event ${THEMES[state.theme].emoji}</div>`
+    : todays.map(ev => `<div class="event-card pop">
+        <div>
+          <div class="event-title">${escapeHtml(ev.title)}</div>
+          ${ev.time?`<div class="event-meta">🕐 ${escapeHtml(ev.time)} ${ev.reminder?'🔔':''}</div>`:''}
+        </div>
+        <button class="icon-btn" onclick="deleteEvent('${ev.id}')">🗑️</button>
+      </div>`).join("");
+
+  const selDate = parseKey(state.selectedDate);
+  const selWeek = getISOWeek(selDate);
+  const selWeekYear = getISOWeekYear(selDate);
+
+  return `
+    <div class="calendar-card cute-shadow">
+      <div class="cal-header">
+        <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+        <div style="text-align:center">
+          <div class="cal-title">${MONTHS[month]} ${year}</div>
+          <div class="week-info">📌 This week: W${String(thisWeek).padStart(2,"0")} · ${thisWeekYear}</div>
+        </div>
+        <button class="cal-nav" onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="day-headers">
+        <div class="day-header wk">Wk</div>
+        ${DAYS.map((d,i)=>`<div class="day-header ${i===0?'sun':''}">${d}</div>`).join("")}
+      </div>
+      <div class="day-grid">${cells}</div>
+    </div>
+    <div class="section-head">
+      <div>
+        <div class="section-title">${state.selectedDate === todayKey() ? 'Today' : state.selectedDate}</div>
+        <div class="section-sub">Week ${String(selWeek).padStart(2,"0")} · ${selWeekYear}</div>
+      </div>
+      <button class="btn-primary" onclick="openEventModal()">+ Event</button>
+    </div>
+    ${eventsHtml}
+  `;
+}
+
+function renderDiary() {
+  const e = state.entries[state.selectedDate] || { mood: "", text: "", stickers: [] };
+  const moodHtml = MOODS.map(m => `<button class="mood-btn ${e.mood===m.e?'active':''}" onclick="setMood('${m.e}')">${m.e}</button>`).join("");
+  const stickersDisplay = (e.stickers||[]).map((s,i)=>`<span onclick="removeSticker(${i})">${s}</span>`).join("");
+  const stickerTray = state.showStickers
+    ? `<div class="sticker-tray">${STICKERS.map(s=>`<button class="sticker-pick" onclick="addSticker('${s}')">${s}</button>`).join("")}</div>` : "";
+
+  const selDate = parseKey(state.selectedDate);
+  const selWeek = getISOWeek(selDate);
+  const selWeekYear = getISOWeekYear(selDate);
+
+  const past = Object.entries(state.entries).sort((a,b)=>b[0].localeCompare(a[0]));
+  const pastHtml = past.length === 0
+    ? `<div class="empty">Your story starts here ${THEMES[state.theme].emoji}</div>`
+    : past.map(([key, en]) => {
+        const d = parseKey(key);
+        const w = getISOWeek(d);
+        return `<div class="past-entry" onclick="selectDate('${key}')">
+          <div class="pe-head">
+            <div><span class="pe-date">${key}</span><span class="pe-week">W${String(w).padStart(2,"0")}</span></div>
+            <button class="icon-btn" onclick="event.stopPropagation();deleteEntry('${key}')">🗑️</button>
+          </div>
+          <div class="pe-body">
+            ${en.mood?`<span style="margin-right:6px">${en.mood}</span>`:''}
+            <span style="opacity:0.8">${escapeHtml((en.text||'').slice(0,60))}${(en.text||'').length>60?'…':''}</span>
+          </div>
+          ${(en.stickers||[]).length?`<div style="margin-top:4px;font-size:16px">${(en.stickers||[]).join(' ')}</div>`:''}
+        </div>`;
+      }).join("");
+
+  return `
+    <div class="calendar-card cute-shadow">
+      <input type="date" class="date-pick" value="${state.selectedDate}" onchange="selectDate(this.value)">
+      <div class="selected-week">📌 Week ${String(selWeek).padStart(2,"0")} · ${selWeekYear}</div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;opacity:0.7">How are you feeling?</div>
+      <div class="mood-row">${moodHtml}</div>
+      <textarea class="diary-text" id="diary-text" placeholder="Dear diary…">${escapeHtml(e.text)}</textarea>
+      ${stickersDisplay?`<div class="stickers-display">${stickersDisplay}</div>`:''}
+      <div class="editor-actions">
+        <button class="sticker-btn" onclick="toggleStickers()">✨ Stickers</button>
+        <button class="save-btn" onclick="saveEntry()">Save entry</button>
+      </div>
+      ${stickerTray}
+    </div>
+    <div class="section-title" style="margin:24px 4px 10px">✨ Past entries</div>
+    ${pastHtml}
+  `;
+}
+
+// ─────────── Actions ───────────
+function setMood(em) {
+  const e = state.entries[state.selectedDate] || { mood:"", text:"", stickers:[] };
+  e.mood = e.mood === em ? "" : em;
+  state.entries[state.selectedDate] = e;
+  save();
+  render();
+}
+
+function addSticker(s) {
+  const e = state.entries[state.selectedDate] || { mood:"", text:"", stickers:[] };
+  e.stickers = [...(e.stickers||[]), s];
+  state.entries[state.selectedDate] = e;
+  save();
+  render();
+}
+
+function removeSticker(i) {
+  const e = state.entries[state.selectedDate];
+  if (!e) return;
+  e.stickers.splice(i, 1);
+  save();
+  render();
+}
+
+function toggleStickers() {
+  state.showStickers = !state.showStickers;
+  render();
+}
+
+function saveEntry() {
+  const text = document.getElementById("diary-text").value;
+  const cur = state.entries[state.selectedDate] || { mood:"", text:"", stickers:[] };
+  cur.text = text;
+  if (!cur.mood && !cur.text && (!cur.stickers || cur.stickers.length===0)) {
+    delete state.entries[state.selectedDate];
+  } else {
+    state.entries[state.selectedDate] = cur;
+  }
+  save();
+  alert("Saved 💖");
+  render();
+}
+
+function deleteEntry(key) {
+  if (!confirm("Delete this entry?")) return;
+  delete state.entries[key];
+  save();
+  render();
+}
+
+function deleteEvent(id) {
+  state.events[state.selectedDate] = (state.events[state.selectedDate]||[]).filter(e => e.id !== id);
+  save();
+  render();
+}
+
+// ─────────── Modals ───────────
+function openEventModal() {
+  const wrap = document.createElement("div");
+  wrap.className = "modal-bg";
+  wrap.id = "modal-bg";
+  wrap.onclick = (e) => { if (e.target === wrap) closeModal(); };
+  wrap.innerHTML = `
+    <div class="modal">
+      <div class="handle"></div>
+      <div class="modal-title">New event ✨</div>
+      <input class="input" id="ev-title" placeholder="What's happening?" autofocus>
+      <input class="input" id="ev-time" type="time">
+      <label class="reminder-box">
+        <input type="checkbox" id="ev-reminder"> 🔔 Remind me
+      </label>
+      <div class="modal-actions">
+        <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-save" onclick="addEvent()">Save</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(wrap);
+  setTimeout(()=>document.getElementById("ev-title").focus(), 100);
+}
+
+function addEvent() {
+  const title = document.getElementById("ev-title").value.trim();
+  const time = document.getElementById("ev-time").value;
+  const reminder = document.getElementById("ev-reminder").checked;
+  if (!title) { closeModal(); return; }
+  const id = Date.now().toString();
+  state.events[state.selectedDate] = [...(state.events[state.selectedDate]||[]), { id, title, time, reminder, notified: false }];
+  save();
+  if (reminder && "Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+  closeModal();
+  render();
+}
+
+function openThemes() {
+  const wrap = document.createElement("div");
+  wrap.className = "modal-bg";
+  wrap.id = "modal-bg";
+  wrap.onclick = (e) => { if (e.target === wrap) closeModal(); };
+  const cards = Object.entries(THEMES).map(([k,th]) => `
+    <button class="theme-card ${state.theme===k?'active':''}" style="border-color:${state.theme===k?'var(--primary)':'var(--border)'}" onclick="setTheme('${k}')">
+      <div class="te">${th.emoji}</div>
+      <div class="tn">${th.name}</div>
+    </button>
+  `).join("");
+  wrap.innerHTML = `<div class="modal"><div class="handle"></div><div class="modal-title">Choose a theme 🎨</div><div class="theme-grid">${cards}</div></div>`;
+  document.body.appendChild(wrap);
+}
+
+function closeModal() {
+  const m = document.getElementById("modal-bg");
+  if (m) m.remove();
+}
+
+// ─────────── Reminders ───────────
+setInterval(() => {
+  const now = new Date();
+  const key = todayKey();
+  const todays = state.events[key] || [];
+  todays.forEach(ev => {
+    if (!ev.reminder || ev.notified || !ev.time) return;
+    const [hh, mm] = ev.time.split(":").map(Number);
+    if (now.getHours() === hh && now.getMinutes() === mm) {
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("📅 " + ev.title, { body: "Reminder from your diary" });
+      } else {
+        alert("🔔 Reminder: " + ev.title);
+      }
+      ev.notified = true;
+      save();
+    }
+  });
+}, 30000);
+
+// ─────────── Init ───────────
+applyTheme();
+render();
+</script>
+</body>
+</html>
