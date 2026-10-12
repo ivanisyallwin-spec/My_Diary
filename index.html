@@ -3,27 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#ff8fb1">
+<meta name="theme-color" content="#2d7a3e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="My Diary">
 <meta name="mobile-web-app-capable" content="yes">
-<title>My Diary 🌸</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌸%3C/text%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌸%3C/text%3E%3C/svg%3E">
-<link rel="manifest" href='data:application/manifest+json,{"name":"My Diary","short_name":"Diary","start_url":".","display":"standalone","background_color":"%23ffe4ec","theme_color":"%23ff8fb1","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"%3E%3Crect width=\"100\" height=\"100\" fill=\"%23ffe4ec\"/%3E%3Ctext y=\".9em\" font-size=\"90\"%3E🌸%3C/text%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}'>
+<title>My Diary 🌿</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌿%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌿%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href='data:application/manifest+json,{"name":"My Diary","short_name":"Diary","start_url":".","display":"standalone","background_color":"%23e8f5ea","theme_color":"%232d7a3e","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"%3E%3Crect width=\"100\" height=\"100\" fill=\"%23e8f5ea\"/%3E%3Ctext y=\".9em\" font-size=\"90\"%3E🌿%3C/text%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}'>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
   :root {
-    --bg: linear-gradient(180deg, #ffe4ec 0%, #fff5f8 50%, #ffe9f1 100%);
-    --primary: #ff8fb1;
-    --primary-dark: #e6739a;
-    --accent: #ffd6e3;
+    /* HEAVENS — default (rich lush green) */
+    --bg: linear-gradient(180deg, #e8f5ea 0%, #f4faf1 50%, #d9eedd 100%);
+    --primary: #2d7a3e;
+    --primary-dark: #1e5a2a;
+    --accent: #b5dcc0;
     --card: #ffffff;
-    --text: #5a3a4a;
-    --soft: #fff0f5;
-    --border: #ffcad9;
+    --text: #1e3826;
+    --soft: #eaf5ec;
+    --border: #a3cfae;
+  }
+  body.theme-sakura {
+    --bg: linear-gradient(180deg, #ffe4ec 0%, #fff5f8 50%, #ffe9f1 100%);
+    --primary: #ff8fb1; --primary-dark: #e6739a; --accent: #ffd6e3;
+    --text: #5a3a4a; --soft: #fff0f5; --border: #ffcad9;
   }
   body.theme-matcha {
     --bg: linear-gradient(180deg, #e8f3e0 0%, #f4faef 50%, #e3f0d8 100%);
@@ -58,53 +64,67 @@
   .cute-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04); }
 
   header { padding: 20px 20px 12px; display: flex; justify-content: space-between; align-items: center; }
-  h1 { font-family: 'Caveat', cursive; font-size: 34px; color: var(--primary-dark); line-height: 1; }
-  .sub { font-size: 13px; opacity: 0.7; margin-top: 4px; }
-  .palette-btn { background: var(--card); border: 2px solid var(--border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  h1 { font-family: 'Caveat', cursive; font-size: 38px; color: var(--primary-dark); line-height: 1; }
+  .sub { font-size: 14px; opacity: 0.75; margin-top: 4px; font-weight: 500; }
+  .palette-btn { background: var(--card); border: 2px solid var(--border); border-radius: 50%; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
 
   .content { padding: 0 16px; }
   .calendar-card { background: var(--card); border-radius: 24px; padding: 18px; border: 2px solid var(--border); }
-  .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-  .cal-title { font-size: 18px; font-weight: 700; color: var(--primary-dark); }
-  .week-info { font-size: 11px; color: var(--primary); margin-top: 2px; font-weight: 600; }
-  .cal-nav { background: var(--soft); border-radius: 12px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--primary); font-weight: 700; }
+  .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .cal-title { font-size: 22px; font-weight: 700; color: var(--primary-dark); letter-spacing: 0.3px; }
+  .week-info { font-size: 13px; color: var(--primary); margin-top: 4px; font-weight: 700; }
+  .cal-nav { background: var(--soft); border-radius: 12px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--primary); font-weight: 700; }
 
-  /* Calendar grid with week column */
-  .day-headers, .day-grid { display: grid; grid-template-columns: 28px repeat(7, 1fr); gap: 4px; }
-  .day-headers { margin-bottom: 6px; }
-  .day-header { text-align: center; font-size: 11px; font-weight: 600; opacity: 0.6; padding: 4px 0; }
+  /* Calendar grid with week column — PAPER-PLANNER STYLE */
+  .day-headers, .day-grid { display: grid; grid-template-columns: 30px repeat(7, 1fr); gap: 4px; }
+  .day-headers { margin-bottom: 8px; }
+  .day-header { text-align: center; font-size: 13px; font-weight: 700; opacity: 0.8; padding: 6px 0; letter-spacing: 0.5px; }
   .day-header.sun { color: var(--primary); }
-  .day-header.wk { color: var(--primary-dark); opacity: 1; }
-  .week-cell { display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--primary-dark); background: var(--soft); border-radius: 8px; opacity: 0.85; }
-  .day-cell { aspect-ratio: 1; border: 2px solid transparent; background: transparent; border-radius: 12px; color: var(--text); font-weight: 500; font-size: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 0; transition: all 0.2s; }
-  .day-cell.today { background: var(--accent); font-weight: 700; }
-  .day-cell.selected { border-color: var(--primary); }
-  .dots { display: flex; gap: 2px; margin-top: 2px; min-height: 4px; }
-  .dot { width: 4px; height: 4px; border-radius: 50%; }
-  .dot.event { background: var(--primary); }
-  .dot.entry { background: var(--primary-dark); }
+  .day-header.wk { color: var(--primary-dark); opacity: 1; font-size: 11px; }
+  .week-cell { display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--primary-dark); background: var(--soft); border-radius: 8px; opacity: 0.9; letter-spacing: 0.3px; min-height: 78px; }
+  .day-cell {
+    min-height: 78px; border: 1.5px solid var(--border); background: #fff;
+    border-radius: 10px; color: var(--text); font-weight: 600;
+    display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start;
+    position: relative; padding: 4px 3px 3px 5px; transition: all 0.2s;
+    overflow: hidden; text-align: left;
+  }
+  .day-cell .d-num { font-size: 14px; font-weight: 800; color: var(--primary-dark); line-height: 1; align-self: flex-start; }
+  .day-cell.today { background: var(--accent); border-color: var(--primary); }
+  .day-cell.today .d-num { color: var(--primary-dark); }
+  .day-cell.selected { border-color: var(--primary); border-width: 2.5px; }
+  .day-cell .ev-list { margin-top: 3px; display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
+  .day-cell .ev-item {
+    font-size: 9.5px; line-height: 1.15; font-weight: 600;
+    background: var(--soft); color: var(--primary-dark);
+    padding: 2px 3px; border-radius: 4px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    border-left: 2px solid var(--primary);
+  }
+  .day-cell .ev-more { font-size: 9px; opacity: 0.7; font-weight: 700; padding-left: 2px; }
+  .day-cell .entry-dot { position: absolute; bottom: 3px; right: 4px; font-size: 10px; }
 
-  .section-head { display: flex; justify-content: space-between; align-items: center; margin: 20px 4px 10px; }
-  .section-title { font-size: 15px; color: var(--primary-dark); font-weight: 700; }
-  .section-sub { font-size: 11px; opacity: 0.7; margin-top: 2px; font-weight: 500; }
-  .btn-primary { background: var(--primary); color: white; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
-  .empty { background: var(--card); border-radius: 16px; padding: 24px; text-align: center; border: 2px dashed var(--border); font-size: 13px; opacity: 0.6; }
-  .event-card { background: var(--card); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 2px solid var(--border); }
-  .event-title { font-weight: 600; font-size: 14px; }
-  .event-meta { font-size: 12px; opacity: 0.7; margin-top: 2px; }
-  .icon-btn { color: var(--primary); padding: 6px; font-size: 16px; }
+  .section-head { display: flex; justify-content: space-between; align-items: center; margin: 22px 4px 12px; }
+  .section-title { font-size: 17px; color: var(--primary-dark); font-weight: 700; }
+  .section-sub { font-size: 13px; opacity: 0.75; margin-top: 3px; font-weight: 600; color: var(--primary); }
+  .btn-primary { background: var(--primary); color: white; padding: 10px 16px; border-radius: 22px; font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+  .empty { background: var(--card); border-radius: 16px; padding: 24px; text-align: center; border: 2px dashed var(--border); font-size: 14px; opacity: 0.65; }
+  .event-card { background: var(--card); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 2px solid var(--border); }
+  .event-title { font-weight: 700; font-size: 15px; }
+  .event-meta { font-size: 13px; opacity: 0.75; margin-top: 3px; font-weight: 600; }
+  .icon-btn { color: var(--primary); padding: 6px; font-size: 17px; }
 
   nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 2px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0 calc(14px + env(safe-area-inset-bottom)); }
-  .nav-btn { padding: 4px 16px; display: flex; flex-direction: column; align-items: center; gap: 2px; opacity: 0.5; font-size: 11px; font-weight: 600; }
+  .nav-btn { padding: 4px 16px; display: flex; flex-direction: column; align-items: center; gap: 2px; opacity: 0.5; font-size: 12px; font-weight: 700; }
   .nav-btn.active { opacity: 1; color: var(--primary); }
-  .nav-icon { font-size: 22px; }
+  .nav-icon { font-size: 24px; }
 
   .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: flex-end; z-index: 100; }
   .modal { background: var(--card); width: 100%; border-radius: 24px 24px 0 0; padding: 24px 20px calc(32px + env(safe-area-inset-bottom)); }
   .handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px; }
-  .modal-title { color: var(--primary-dark); font-size: 18px; margin-bottom: 16px; font-weight: 700; }
-  .input { width: 100%; padding: 14px 16px; border-radius: 14px; border: 2px solid var(--border); background: var(--soft); font-size: 15px; outline: none; color: var(--text); margin-bottom: 12px; }
-  .reminder-box { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding: 12px; border-radius: 12px; background: var(--soft); cursor: pointer; font-size: 14px; }
+  .modal-title { color: var(--primary-dark); font-size: 19px; margin-bottom: 16px; font-weight: 700; }
+  .input { width: 100%; padding: 14px 16px; border-radius: 14px; border: 2px solid var(--border); background: var(--soft); font-size: 16px; outline: none; color: var(--text); margin-bottom: 12px; }
+  .reminder-box { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding: 12px; border-radius: 12px; background: var(--soft); cursor: pointer; font-size: 15px; }
   .modal-actions { display: flex; gap: 10px; }
   .btn { flex: 1; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 15px; }
   .btn-cancel { border: 2px solid var(--border); color: var(--text); font-weight: 600; }
@@ -113,33 +133,34 @@
   .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .theme-card { border: 2px solid var(--border); border-radius: 16px; padding: 16px; text-align: left; }
   .theme-card.active { border-width: 3px; }
-  .theme-card .te { font-size: 24px; }
-  .theme-card .tn { font-weight: 700; margin-top: 4px; }
+  .theme-card .te { font-size: 26px; }
+  .theme-card .tn { font-weight: 700; margin-top: 4px; font-size: 15px; }
+  .theme-card .td { font-size: 11px; opacity: 0.7; margin-top: 2px; font-weight: 500; }
 
   .mood-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-  .mood-btn { background: var(--soft); border: 2px solid transparent; border-radius: 12px; padding: 8px; font-size: 22px; width: 44px; height: 44px; }
+  .mood-btn { background: var(--soft); border: 2px solid transparent; border-radius: 12px; padding: 8px; font-size: 24px; width: 46px; height: 46px; }
   .mood-btn.active { background: var(--accent); border-color: var(--primary); }
-  .diary-text { width: 100%; padding: 14px; border-radius: 14px; border: 2px solid var(--border); background: var(--soft); font-size: 18px; outline: none; font-family: 'Caveat', cursive; color: var(--text); resize: vertical; line-height: 1.5; min-height: 140px; }
-  .stickers-display { margin-top: 10px; font-size: 24px; }
+  .diary-text { width: 100%; padding: 14px; border-radius: 14px; border: 2px solid var(--border); background: var(--soft); font-size: 20px; outline: none; font-family: 'Caveat', cursive; color: var(--text); resize: vertical; line-height: 1.5; min-height: 150px; }
+  .stickers-display { margin-top: 10px; font-size: 26px; }
   .stickers-display span { margin-right: 4px; cursor: pointer; }
   .editor-actions { display: flex; gap: 8px; margin-top: 12px; }
-  .sticker-btn { flex: 1; padding: 12px; border-radius: 12px; border: 2px solid var(--border); background: var(--soft); color: var(--primary-dark); font-weight: 600; font-size: 14px; }
-  .save-btn { flex: 1; padding: 12px; border-radius: 12px; background: var(--primary); color: white; font-weight: 700; font-size: 14px; }
+  .sticker-btn { flex: 1; padding: 13px; border-radius: 12px; border: 2px solid var(--border); background: var(--soft); color: var(--primary-dark); font-weight: 700; font-size: 15px; }
+  .save-btn { flex: 1; padding: 13px; border-radius: 12px; background: var(--primary); color: white; font-weight: 700; font-size: 15px; }
   .sticker-tray { margin-top: 12px; padding: 12px; background: var(--soft); border-radius: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
-  .sticker-pick { background: var(--card); border: 1px solid var(--border); border-radius: 10px; font-size: 22px; width: 40px; height: 40px; }
-  .date-pick { background: transparent; color: var(--primary-dark); font-weight: 700; font-size: 15px; outline: none; border: none; margin-bottom: 4px; }
-  .selected-week { font-size: 11px; color: var(--primary); font-weight: 600; margin-bottom: 12px; }
-  .past-entry { background: var(--card); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; border: 2px solid var(--border); cursor: pointer; }
+  .sticker-pick { background: var(--card); border: 1px solid var(--border); border-radius: 10px; font-size: 24px; width: 42px; height: 42px; }
+  .date-pick { background: transparent; color: var(--primary-dark); font-weight: 700; font-size: 17px; outline: none; border: none; margin-bottom: 4px; }
+  .selected-week { font-size: 13px; color: var(--primary); font-weight: 700; margin-bottom: 14px; }
+  .past-entry { background: var(--card); border-radius: 14px; padding: 13px 15px; margin-bottom: 9px; border: 2px solid var(--border); cursor: pointer; }
   .pe-head { display: flex; justify-content: space-between; align-items: center; }
-  .pe-date { font-size: 12px; color: var(--primary-dark); font-weight: 600; }
-  .pe-week { font-size: 10px; color: var(--primary); font-weight: 700; margin-left: 6px; }
-  .pe-body { margin-top: 6px; font-size: 14px; }
+  .pe-date { font-size: 13px; color: var(--primary-dark); font-weight: 700; }
+  .pe-week { font-size: 11px; color: var(--primary); font-weight: 700; margin-left: 6px; background: var(--soft); padding: 2px 7px; border-radius: 8px; }
+  .pe-body { margin-top: 7px; font-size: 15px; }
 </style>
 </head>
 <body>
   <header>
     <div>
-      <h1><span class="float-emoji" id="emoji">🌸</span> My Diary</h1>
+      <h1><span class="float-emoji" id="emoji">🌿</span> My Diary</h1>
       <div class="sub" id="subtitle">Plan your days</div>
     </div>
     <button class="palette-btn" onclick="openThemes()">🎨</button>
@@ -174,21 +195,22 @@ function getISOWeekYear(date) {
 
 // ─────────── State ───────────
 const THEMES = {
-  sakura:    { name: "Sakura",    emoji: "🌸", class: "" },
-  matcha:    { name: "Matcha",    emoji: "🍵", class: "theme-matcha" },
-  blueberry: { name: "Blueberry", emoji: "🫐", class: "theme-blueberry" },
-  honey:     { name: "Honey",     emoji: "🍯", class: "theme-honey" },
+  heavens:   { name: "Heavens",   emoji: "🌿", class: "",               desc: "Lush green · default" },
+  sakura:    { name: "Sakura",    emoji: "🌸", class: "theme-sakura",   desc: "Soft pink" },
+  matcha:    { name: "Matcha",    emoji: "🍵", class: "theme-matcha",   desc: "Light green" },
+  blueberry: { name: "Blueberry", emoji: "🫐", class: "theme-blueberry",desc: "Calm blue" },
+  honey:     { name: "Honey",     emoji: "🍯", class: "theme-honey",    desc: "Warm yellow" },
 };
 const MOODS = [
   { e: "🥰", l: "Loved" }, { e: "😊", l: "Happy" }, { e: "😌", l: "Calm" }, { e: "😐", l: "Meh" },
   { e: "😔", l: "Sad" }, { e: "😤", l: "Frustrated" }, { e: "😴", l: "Tired" }, { e: "🤩", l: "Excited" },
 ];
-const STICKERS = ["🌸","🌷","🌻","🌈","⭐","✨","💖","🎀","🍰","🧸","☁️","🌙","☀️","🦄","🐰","🍓","🧁","🌿","🦋","🍃"];
+const STICKERS = ["🌿","🌸","🌷","🌻","🌈","⭐","✨","💖","🎀","🍰","🧸","☁️","🌙","☀️","🦄","🐰","🍓","🧁","🦋","🍃"];
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const DAYS = ["M","T","W","T","F","S","S"];
 
 let state = {
-  theme: localStorage.getItem("theme") || "sakura",
+  theme: localStorage.getItem("theme") || "heavens",
   tab: "calendar",
   viewDate: new Date(),
   selectedDate: todayKey(),
@@ -217,7 +239,7 @@ function applyTheme() {
   document.body.className = THEMES[state.theme].class;
   document.getElementById("emoji").textContent = THEMES[state.theme].emoji;
   document.querySelector('meta[name="theme-color"]').setAttribute("content",
-    getComputedStyle(document.body).getPropertyValue("--primary").trim() || "#ff8fb1");
+    getComputedStyle(document.body).getPropertyValue("--primary").trim() || "#2d7a3e");
 }
 
 function setTab(t) {
@@ -268,16 +290,13 @@ function render() {
 function renderCalendar() {
   const year = state.viewDate.getFullYear();
   const month = state.viewDate.getMonth();
-  // getDay(): Sun=0, Mon=1, ..., Sat=6
-  // Convert to ISO: Mon=0, Tue=1, ..., Sun=6
+  // Monday-first: getDay()=Sun=0..Sat=6  →  Mon=0..Sun=6
   const jsFirstDay = new Date(year, month, 1).getDay();
-  const firstDay = (jsFirstDay + 6) % 7; // Monday-first index
+  const firstDay = (jsFirstDay + 6) % 7;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  // Build calendar as rows of 7 days (Mon..Sun), with week number column on the left
   const rows = [];
   let currentRow = new Array(7).fill(null);
-  // Fill leading empties
   for (let i = 0; i < firstDay; i++) currentRow[i] = null;
   let col = firstDay;
   for (let d = 1; d <= daysInMonth; d++) {
@@ -291,21 +310,17 @@ function renderCalendar() {
   }
   if (col !== 0) rows.push(currentRow);
 
-  // Build HTML grid with week numbers
   let cells = "";
   rows.forEach(row => {
-    // ISO weeks: Thursday determines the week number.
-    // Grid is Mon-first: Mon=0, Tue=1, Wed=2, Thu=3, Fri=4, Sat=5, Sun=6
     let weekNum = "";
-    const thursday = row[3]; // Thursday index in Mon-first grid
+    const thursday = row[3];
     if (thursday !== null) {
       weekNum = getISOWeek(new Date(year, month, thursday));
     } else {
-      // Edge case: find any valid day, compute Thursday of that ISO week
       const firstValid = row.find(d => d !== null);
       if (firstValid) {
         const dt = new Date(year, month, firstValid);
-        const dayNum = dt.getDay() || 7; // Mon=1..Sun=7
+        const dayNum = dt.getDay() || 7;
         const thu = new Date(dt);
         thu.setDate(dt.getDate() + (4 - dayNum));
         weekNum = getISOWeek(thu);
@@ -319,16 +334,24 @@ function renderCalendar() {
         const key = dateKeyForDay(d);
         const isToday = key === todayKey();
         const isSel = key === state.selectedDate;
-        const hasEvent = (state.events[key] || []).length > 0;
+        const dayEvents = state.events[key] || [];
         const hasEntry = !!state.entries[key];
-        cells += `<button class="day-cell ${isToday?'today':''} ${isSel?'selected':''}" onclick="selectDate('${key}')">${d}
-          <div class="dots">${hasEvent?'<span class="dot event"></span>':''}${hasEntry?'<span class="dot entry"></span>':''}</div>
+        // Show up to 2 event titles inside the cell, "+N" for the rest
+        const shownEvents = dayEvents.slice(0, 2).map(ev =>
+          `<div class="ev-item" title="${escapeHtml(ev.title)}">${ev.time ? escapeHtml(ev.time)+' ' : ''}${escapeHtml(ev.title)}</div>`
+        ).join('');
+        const moreCount = dayEvents.length - 2;
+        const moreHtml = moreCount > 0 ? `<div class="ev-more">+${moreCount} more</div>` : '';
+        const entryDot = hasEntry ? `<span class="entry-dot">📝</span>` : '';
+        cells += `<button class="day-cell ${isToday?'today':''} ${isSel?'selected':''}" onclick="selectDate('${key}')">
+          <span class="d-num">${d}</span>
+          <div class="ev-list">${shownEvents}${moreHtml}</div>
+          ${entryDot}
         </button>`;
       }
     });
   });
 
-  // Today's week info for header
   const today = new Date();
   const thisWeek = getISOWeek(today);
   const thisWeekYear = getISOWeekYear(today);
@@ -347,6 +370,8 @@ function renderCalendar() {
   const selDate = parseKey(state.selectedDate);
   const selWeek = getISOWeek(selDate);
   const selWeekYear = getISOWeekYear(selDate);
+  const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const selDayName = state.selectedDate === todayKey() ? 'Today' : DAY_NAMES[selDate.getDay()];
 
   return `
     <div class="calendar-card cute-shadow">
@@ -366,7 +391,7 @@ function renderCalendar() {
     </div>
     <div class="section-head">
       <div>
-        <div class="section-title">${state.selectedDate === todayKey() ? 'Today' : state.selectedDate}</div>
+        <div class="section-title">${selDayName} · ${state.selectedDate}</div>
         <div class="section-sub">Week ${String(selWeek).padStart(2,"0")} · ${selWeekYear}</div>
       </div>
       <button class="btn-primary" onclick="openEventModal()">+ Event</button>
@@ -398,10 +423,10 @@ function renderDiary() {
             <button class="icon-btn" onclick="event.stopPropagation();deleteEntry('${key}')">🗑️</button>
           </div>
           <div class="pe-body">
-            ${en.mood?`<span style="margin-right:6px">${en.mood}</span>`:''}
+            ${en.mood?`<span style="margin-right:6px;font-size:18px">${en.mood}</span>`:''}
             <span style="opacity:0.8">${escapeHtml((en.text||'').slice(0,60))}${(en.text||'').length>60?'…':''}</span>
           </div>
-          ${(en.stickers||[]).length?`<div style="margin-top:4px;font-size:16px">${(en.stickers||[]).join(' ')}</div>`:''}
+          ${(en.stickers||[]).length?`<div style="margin-top:4px;font-size:18px">${(en.stickers||[]).join(' ')}</div>`:''}
         </div>`;
       }).join("");
 
@@ -409,7 +434,7 @@ function renderDiary() {
     <div class="calendar-card cute-shadow">
       <input type="date" class="date-pick" value="${state.selectedDate}" onchange="selectDate(this.value)">
       <div class="selected-week">📌 Week ${String(selWeek).padStart(2,"0")} · ${selWeekYear}</div>
-      <div style="font-size:13px;font-weight:600;margin-bottom:8px;opacity:0.7">How are you feeling?</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px;opacity:0.75">How are you feeling?</div>
       <div class="mood-row">${moodHtml}</div>
       <textarea class="diary-text" id="diary-text" placeholder="Dear diary…">${escapeHtml(e.text)}</textarea>
       ${stickersDisplay?`<div class="stickers-display">${stickersDisplay}</div>`:''}
@@ -464,7 +489,7 @@ function saveEntry() {
     state.entries[state.selectedDate] = cur;
   }
   save();
-  alert("Saved 💖");
+  alert("Saved 💚");
   render();
 }
 
@@ -530,6 +555,7 @@ function openThemes() {
     <button class="theme-card ${state.theme===k?'active':''}" style="border-color:${state.theme===k?'var(--primary)':'var(--border)'}" onclick="setTheme('${k}')">
       <div class="te">${th.emoji}</div>
       <div class="tn">${th.name}</div>
+      <div class="td">${th.desc}</div>
     </button>
   `).join("");
   wrap.innerHTML = `<div class="modal"><div class="handle"></div><div class="modal-title">Choose a theme 🎨</div><div class="theme-grid">${cards}</div></div>`;
