@@ -150,6 +150,17 @@
   .sticker-pick { background: var(--card); border: 1px solid var(--border); border-radius: 10px; font-size: 24px; width: 42px; height: 42px; }
   .date-pick { background: transparent; color: var(--primary-dark); font-weight: 700; font-size: 17px; outline: none; border: none; margin-bottom: 4px; }
   .selected-week { font-size: 13px; color: var(--primary); font-weight: 700; margin-bottom: 14px; }
+  .weather-card { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 12px 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+  .wx-left { display: flex; align-items: center; gap: 10px; }
+  .wx-icon { font-size: 32px; line-height: 1; }
+  .wx-temp { font-size: 24px; font-weight: 800; color: var(--primary-dark); line-height: 1; }
+  .wx-info { display: flex; flex-direction: column; }
+  .wx-cond { font-size: 13px; font-weight: 700; color: var(--primary-dark); }
+  .wx-sub { font-size: 11px; opacity: 0.7; font-weight: 600; margin-top: 2px; }
+  .wx-right { text-align: right; }
+  .wx-loc { font-size: 11px; font-weight: 700; color: var(--primary); opacity: 0.9; }
+  .wx-time { font-size: 10px; opacity: 0.55; font-weight: 600; margin-top: 2px; }
+  .wx-loading { opacity: 0.6; font-size: 13px; text-align: center; padding: 4px; font-weight: 600; }
   .past-entry { background: var(--card); border-radius: 14px; padding: 13px 15px; margin-bottom: 9px; border: 2px solid var(--border); cursor: pointer; }
   .pe-head { display: flex; justify-content: space-between; align-items: center; }
   .pe-date { font-size: 13px; color: var(--primary-dark); font-weight: 700; }
@@ -191,6 +202,68 @@ function getISOWeekYear(date) {
   const dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   return d.getUTCFullYear();
+}
+
+// ─────────── Weather (Open-Meteo, no API key) ───────────
+const WX_CACHE_MINUTES = 20;
+const WX_CODES = {
+  0:['☀️','Clear'], 1:['🌤️','Mostly clear'], 2:['⛅','Partly cloudy'], 3:['☁️','Overcast'],
+  45:['🌫️','Fog'], 48:['🌫️','Rime fog'],
+  51:['🌦️','Light drizzle'], 53:['🌦️','Drizzle'], 55:['🌦️','Heavy drizzle'],
+  61:['🌧️','Light rain'], 63:['🌧️','Rain'], 65:['🌧️','Heavy rain'],
+  66:['🌧️','Freezing rain'], 67:['🌧️','Freezing rain'],
+  71:['🌨️','Light snow'], 73:['🌨️','Snow'], 75:['🌨️','Heavy snow'], 77:['🌨️','Snow grains'],
+  80:['🌦️','Showers'], 81:['🌦️','Showers'], 82:['⛈️','Heavy showers'],
+  85:['🌨️','Snow showers'], 86:['🌨️','Snow showers'],
+  95:['⛈️','Thunderstorm'], 96:['⛈️','Thunder + hail'], 99:['⛈️','Heavy thunder'],
+};
+function wxFromCode(c){ return WX_CODES[c] || ['🌡️','—']; }
+
+async function loadWeather(){
+  const el = document.getElementById('weather');
+  if (!el) return;
+  // Try cache first
+  try {
+    const cached = JSON.parse(localStorage.getItem('wx') || 'null');
+    if (cached && Date.now() - cached.ts < WX_CACHE_MINUTES*60*1000) {
+      renderWeather(cached.data); return;
+    }
+  } catch(e){}
+  try {
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=10.8231&longitude=106.6297&current=temperature_2m,relative_humidity_2m,weather_code,apparent_temperature&timezone=Asia%2FBangkok');
+    const d = await r.json();
+    const data = {
+      t: Math.round(d.current.temperature_2m),
+      feels: Math.round(d.current.apparent_temperature),
+      h: d.current.relative_humidity_2m,
+      c: d.current.weather_code,
+      ts_api: d.current.time,
+    };
+    localStorage.setItem('wx', JSON.stringify({ts: Date.now(), data}));
+    renderWeather(data);
+  } catch(e) {
+    el.innerHTML = '<div class="wx-loading">Weather unavailable</div>';
+  }
+}
+function renderWeather(w){
+  const el = document.getElementById('weather'); if (!el) return;
+  const [icon, cond] = wxFromCode(w.c);
+  const now = new Date(w.ts_api || Date.now());
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  el.innerHTML = `
+    <div class="wx-left">
+      <div class="wx-icon">${icon}</div>
+      <div class="wx-info">
+        <div><span class="wx-temp">${w.t}°</span> <span class="wx-cond">${cond}</span></div>
+        <div class="wx-sub">Feels ${w.feels}° · Humidity ${w.h}%</div>
+      </div>
+    </div>
+    <div class="wx-right">
+      <div class="wx-loc">📍 HCMC</div>
+      <div class="wx-time">Updated ${hh}:${mm}</div>
+    </div>
+  `;
 }
 
 // ─────────── State ───────────
@@ -283,7 +356,7 @@ function escapeHtml(s) {
 // ─────────── Render ───────────
 function render() {
   const app = document.getElementById("app");
-  if (state.tab === "calendar") app.innerHTML = renderCalendar();
+  if (state.tab === "calendar") { app.innerHTML = renderCalendar(); loadWeather(); }
   else app.innerHTML = renderDiary();
 }
 
@@ -374,6 +447,7 @@ function renderCalendar() {
   const selDayName = state.selectedDate === todayKey() ? 'Today' : DAY_NAMES[selDate.getDay()];
 
   return `
+    <div class="weather-card cute-shadow" id="weather"><div class="wx-loading">🌤️ Loading weather…</div></div>
     <div class="calendar-card cute-shadow">
       <div class="cal-header">
         <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
